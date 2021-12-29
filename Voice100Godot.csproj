@@ -1,0 +1,13 @@
+<Project Sdk="Godot.NET.Sdk/3.3.0">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Voice100Sharp.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="voice100_native.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
