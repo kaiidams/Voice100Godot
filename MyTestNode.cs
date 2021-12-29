@@ -1,42 +1,72 @@
 using Godot;
 using System;
 using System.Runtime.InteropServices;
+using Voice100Sharp;
 
 public class MyTestNode : Node
 {
-#if true
-    const string DllName = "voice100_native";
-#else
-        const string DllName = "__Internal";
-#endif
-
-    [DllImport(DllName)]
-    private static extern int Voice100Sharp_VocoderDecode(
-        float[] f0, float[] logspc, float[] codedap, int f0_length,
-        int fft_size, double frame_period, int fs, float log_offset, short[] y, int y_length);
-    
     // Declare member variables here. Examples:
     // private int a = 2;
     // private string b = "text";
 
+    private SpeechSynthesizer _speechSynthesizer;
+    private AudioStreamGeneratorPlayback _playback;
+    private short[] _waveData;
+    private int _waveIndex;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        if (_speechSynthesizer == null)
+        {
+            _speechSynthesizer = new SpeechSynthesizer(
+                "ttsalign_en_conv_base-20210808.onnx",
+                "ttsaudio_en_conv_base-20210811.onnx");
+        }
+
+        var button = GetChild(1) as Button;
+        button.Connect("pressed", this, "OnClick");
+    }
+
+    public void OnClick()
+    {
+        var player = GetChild(0) as AudioStreamPlayer;
+        _playback = player.GetStreamPlayback() as AudioStreamGeneratorPlayback;
+        (player.Stream as AudioStreamGenerator).MixRate = 16000;
+        byte[] waveByteData = _speechSynthesizer.Speak("Hello, I am a rocket.");
+        _waveData = MemoryMarshal.Cast<byte, short>(waveByteData).ToArray();
+        _waveIndex = 0;
+        player.Play();
+        Console.WriteLine("waveData.Length: {0}", _waveData.Length);
+    }
+
+    public override void _ExitTree()
+    {
+        if (_speechSynthesizer != null)
+        {
+            _speechSynthesizer.Dispose();
+            _speechSynthesizer = null;
+        }
     }
 
     //  // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(float delta)
     {
-        var f0 = new float[100];
-        var codecp = new float[100 * 257];
-        var logspc = new float[100];
-        int l = Voice100Sharp_VocoderDecode(
-            f0, logspc, codecp, 100, 512, 5.0, 16000, 1e-15f,
-            null, 0);
-        Console.WriteLine("test: {0}", l);
-        var y = new short[l];
-        Voice100Sharp_VocoderDecode(
-            f0, logspc, codecp, 100, 512, 5.0, 16000, 1e-15f,
-            y, l);
+        if (_playback != null)
+        {
+            var toFill = Math.Min(_waveData.Length - _waveIndex, _playback.GetFramesAvailable());
+
+            if (toFill > 0)
+            {
+                Console.WriteLine("{0}/{1}", 0, _playback.GetFramesAvailable());
+                var buffer = new Vector2[toFill];
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    buffer[i] = (Vector2.One / short.MaxValue) * _waveData[_waveIndex + i];
+                }
+                _playback.PushBuffer(buffer);
+                _waveIndex += toFill;
+            }
+        }
     }
 }

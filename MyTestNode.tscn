@@ -1,6 +1,22 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://MyTestNode.cs" type="Script" id=1]
 
+[sub_resource type="AudioStreamGenerator" id=1]
+mix_rate = 16000.0
+
 [node name="MyTestNode" type="Node"]
 script = ExtResource( 1 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 1 )
+autoplay = true
+
+[node name="Button" type="Button" parent="."]
+margin_right = 12.0
+margin_bottom = 20.0
+size_flags_horizontal = 9
+text = "Speak"
+__meta__ = {
+"_edit_use_anchors_": false
+}

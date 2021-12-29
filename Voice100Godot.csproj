@@ -3,11 +3,25 @@
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="ttsalign_en_conv_base-20210808.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ttsaudio_en_conv_base-20210811.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Voice100Sharp.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="voice100_native.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" Version="1.10.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Voice100Sharp">
+      <HintPath>Voice100Sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
