@@ -13,6 +13,7 @@ public class MyTestNode : Node
     private AudioStreamGeneratorPlayback _playback;
     private short[] _waveData;
     private int _waveIndex;
+    private string _alignedText;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -33,11 +34,11 @@ public class MyTestNode : Node
         var player = GetChild(0) as AudioStreamPlayer;
         _playback = player.GetStreamPlayback() as AudioStreamGeneratorPlayback;
         (player.Stream as AudioStreamGenerator).MixRate = 16000;
-        byte[] waveByteData = _speechSynthesizer.Speak("Hello, I am a rocket.");
-        _waveData = MemoryMarshal.Cast<byte, short>(waveByteData).ToArray();
+        _speechSynthesizer.Speak("Hello, I am a rocket.", out _waveData, out _alignedText);
         _waveIndex = 0;
         player.Play();
         Console.WriteLine("waveData.Length: {0}", _waveData.Length);
+        Console.WriteLine("Aligned text: {0}", _alignedText);
     }
 
     public override void _ExitTree()
