@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Runtime.InteropServices;
-using Voice100Sharp;
+using Voice100;
 
 public class MyTestNode : Node
 {
@@ -13,7 +13,6 @@ public class MyTestNode : Node
     private AudioStreamGeneratorPlayback _playback;
     private short[] _waveData;
     private int _waveIndex;
-    private string _alignedText;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -22,7 +21,8 @@ public class MyTestNode : Node
         {
             _speechSynthesizer = new SpeechSynthesizer(
                 "ttsalign_en_conv_base-20210808.onnx",
-                "ttsaudio_en_conv_base-20210811.onnx");
+                "ttsaudio_en_mt_conv_base-20220316.onnx",
+                true);
         }
 
         var button = GetChild(1) as Button;
@@ -34,11 +34,20 @@ public class MyTestNode : Node
         var player = GetChild(0) as AudioStreamPlayer;
         _playback = player.GetStreamPlayback() as AudioStreamGeneratorPlayback;
         (player.Stream as AudioStreamGenerator).MixRate = 16000;
-        _speechSynthesizer.Speak("Hello, I am a rocket.", out _waveData, out _alignedText);
+        byte[] byteData;
+        string text = null;
+
+        string[] phonemes;
+        _speechSynthesizer.Speak("Hello, I am a rocket.", out byteData, out phonemes);
+        _waveData = MemoryMarshal.Cast<byte, short>(byteData).ToArray();
         _waveIndex = 0;
+        text = string.Join("/", phonemes);
+
         player.Play();
         Console.WriteLine("waveData.Length: {0}", _waveData.Length);
-        Console.WriteLine("Aligned text: {0}", _alignedText);
+        Console.WriteLine("phonemes: {0}", text);
+        var textEdit = GetChild(2) as TextEdit;
+        textEdit.Text = text;
     }
 
     public override void _ExitTree()
