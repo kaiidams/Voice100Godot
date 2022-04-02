@@ -1,12 +1,15 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voice100Godot", "Voice100Godot.csproj", "{20810677-629E-4974-93F6-1CDC2A4A7AD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-	Debug|Any CPU = Debug|Any CPU
-	ExportDebug|Any CPU = ExportDebug|Any CPU
-	ExportRelease|Any CPU = ExportRelease|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{20810677-629E-4974-93F6-1CDC2A4A7AD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -15,5 +18,11 @@ Global
 		{20810677-629E-4974-93F6-1CDC2A4A7AD4}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{20810677-629E-4974-93F6-1CDC2A4A7AD4}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{20810677-629E-4974-93F6-1CDC2A4A7AD4}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E9585FB5-ADCD-4F04-9A8A-8F93E2C34B28}
 	EndGlobalSection
 EndGlobal

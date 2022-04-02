@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Runtime.InteropServices;
-using Voice100Sharp;
+using Voice100;
 
 public class MyTestNode : Node
 {
@@ -13,7 +13,6 @@ public class MyTestNode : Node
     private AudioStreamGeneratorPlayback _playback;
     private short[] _waveData;
     private int _waveIndex;
-    private string _alignedText;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -22,23 +21,36 @@ public class MyTestNode : Node
         {
             _speechSynthesizer = new SpeechSynthesizer(
                 "ttsalign_en_conv_base-20210808.onnx",
-                "ttsaudio_en_conv_base-20210811.onnx");
+                "ttsaudio_en_mt_conv_base-20220316.onnx",
+                true);
         }
 
-        var button = GetChild(1) as Button;
+        var button = GetNode<Button>("Button");
         button.Connect("pressed", this, "OnClick");
+
+        var textEdit = GetNode<TextEdit>("TextEdit");
+        textEdit.Text = "Hello, I am a rocket.";
     }
 
     public void OnClick()
     {
-        var player = GetChild(0) as AudioStreamPlayer;
+        var player = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
         _playback = player.GetStreamPlayback() as AudioStreamGeneratorPlayback;
         (player.Stream as AudioStreamGenerator).MixRate = 16000;
-        _speechSynthesizer.Speak("Hello, I am a rocket.", out _waveData, out _alignedText);
+
+        var textEdit = GetNode<TextEdit>("TextEdit");
+        string text = textEdit.Text;
+
+        string[] phonemes;
+        _speechSynthesizer.Speak(text, out _waveData, out phonemes);
         _waveIndex = 0;
+        string phoneText = string.Join("/", phonemes);
+
         player.Play();
         Console.WriteLine("waveData.Length: {0}", _waveData.Length);
-        Console.WriteLine("Aligned text: {0}", _alignedText);
+        Console.WriteLine("phonemes: {0}", text);
+        var textEdit2 = GetNode<TextEdit>("TextEdit2");
+        textEdit2.Text = phoneText;
     }
 
     public override void _ExitTree()

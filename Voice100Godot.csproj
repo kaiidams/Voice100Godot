@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/3.3.0">
+﻿<Project Sdk="Godot.NET.Sdk/3.3.0">
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
@@ -6,22 +6,18 @@
     <None Include="ttsalign_en_conv_base-20210808.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="ttsaudio_en_conv_base-20210811.onnx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Voice100Sharp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="voice100_native.dll">
+    <None Include="ttsaudio_en_mt_conv_base-20220316.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" Version="1.10.0" />
+    <PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" Version="1.11.0" />
+    <PackageReference Include="Voice100" Version="1.2.3" />
+    <PackageReference Include="Voice100.Native" Version="0.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Voice100Sharp">
-      <HintPath>Voice100Sharp.dll</HintPath>
+    <Reference Include="Voice100">
+      <HintPath>Voice100.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
