@@ -25,29 +25,32 @@ public class MyTestNode : Node
                 true);
         }
 
-        var button = GetChild(1) as Button;
+        var button = GetNode<Button>("Button");
         button.Connect("pressed", this, "OnClick");
+
+        var textEdit = GetNode<TextEdit>("TextEdit");
+        textEdit.Text = "Hello, I am a rocket.";
     }
 
     public void OnClick()
     {
-        var player = GetChild(0) as AudioStreamPlayer;
+        var player = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
         _playback = player.GetStreamPlayback() as AudioStreamGeneratorPlayback;
         (player.Stream as AudioStreamGenerator).MixRate = 16000;
-        byte[] byteData;
-        string text = null;
+
+        var textEdit = GetNode<TextEdit>("TextEdit");
+        string text = textEdit.Text;
 
         string[] phonemes;
-        _speechSynthesizer.Speak("Hello, I am a rocket.", out byteData, out phonemes);
-        _waveData = MemoryMarshal.Cast<byte, short>(byteData).ToArray();
+        _speechSynthesizer.Speak(text, out _waveData, out phonemes);
         _waveIndex = 0;
-        text = string.Join("/", phonemes);
+        string phoneText = string.Join("/", phonemes);
 
         player.Play();
         Console.WriteLine("waveData.Length: {0}", _waveData.Length);
         Console.WriteLine("phonemes: {0}", text);
-        var textEdit = GetChild(2) as TextEdit;
-        textEdit.Text = text;
+        var textEdit2 = GetNode<TextEdit>("TextEdit2");
+        textEdit2.Text = phoneText;
     }
 
     public override void _ExitTree()
