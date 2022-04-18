@@ -20,7 +20,7 @@ public class MyTestNode : Node
         if (_speechSynthesizer == null)
         {
             _speechSynthesizer = new SpeechSynthesizer(
-                "ttsalign_en_conv_base-20210808.onnx",
+                "ttsalign_en_conv_base-20220409.onnx",
                 "ttsaudio_en_mt_conv_base-20220316.onnx",
                 true);
         }
