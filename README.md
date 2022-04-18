@@ -28,8 +28,8 @@ Run it if you run Windows 64-bit.
 ## Native library
 
 This repository depends on NuGet packages. Voie100Sharp includes
-a native library (`voice100_native.dll` for Windows and `voice100_native.so` for Linux).
-You will have to extract `voice100_native.dll` or `voice100_native.so` for your platform
+a native library (`voice100_native.dll` for Windows and `libvoice100_native.so` for Linux).
+You will have to extract `voice100_native.dll` or `libvoice100_native.so` for your platform
 from NuGet package.
 
 Download [voice100.native.0.3.0.nupkg](https://www.nuget.org/packages/Voice100.Native/)
